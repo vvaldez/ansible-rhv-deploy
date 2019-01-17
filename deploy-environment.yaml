@@ -1,0 +1,34 @@
+---
+- hosts: nfs-server
+  tasks:
+  - block:
+    - include_role:
+        name: register-system
+
+    - include_role:
+        name: nfs-setup
+      vars:
+        nfs_exports: "{{ rhv_nfs_exports }}"
+
+    tags: install_nfs
+    when: 
+      - install_nfs is not defined
+      - install_nfs | default(True) | bool == True
+
+- hosts: rhv-hosted-engine
+  tasks:
+  - block:
+    - include_role:
+         name: register-system
+      vars:
+        rhsm_repos: "{{ rhv_hosted_engine_repos }}"
+
+    - include_role:
+        name: prerequisites
+      vars:
+        rhsm_packages: "{{ rhv_hosted_engine_packages }}"
+
+    tags: hosted_engine
+    when:
+      - hosted_engine is not defined
+      - hosted_engine | default(True) | bool == True

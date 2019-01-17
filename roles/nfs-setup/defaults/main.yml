@@ -1,0 +1,22 @@
+---
+nfs_exports: []
+
+nfs_service_state: started
+nfs_service_enabled: true
+
+nfs_services:
+  - rpcbind
+  - nfs-server
+  - nfs-lock
+  - nfs-idmap
+
+nfs_ports:
+  - 2049
+  - 111
+  - 875
+  - 32803
+  - 32769
+  - 20049
+  - 892
+  - 662
+  - 2020

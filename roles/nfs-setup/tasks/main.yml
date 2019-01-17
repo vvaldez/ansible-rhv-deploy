@@ -1,0 +1,56 @@
+---
+- name: Include geerlingguy.nfs
+  include_role:
+    name: geerlingguy.nfs
+
+- name: Ensure nfs services are running as configured.
+  service:
+    name: "{{ nfs_service }}"
+    state: "{{ nfs_service_state }}"
+    enabled: "{{ nfs_service_enabled }}"
+  loop: "{{ nfs_services }}"
+  loop_control:
+    loop_var: nfs_service
+
+- name: Ensure nfs firewall service is enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    service: nfs
+    state: enabled
+
+- name: Copy static port mapping
+  copy:
+    src: nfs
+    dest: /etc/sysconfig/nfs
+
+- name: Ensure nfs firewall tcp ports are enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    port: "{{ nfs_port }}/tcp"
+    state: enabled
+  loop: "{{ nfs_ports }}"
+  loop_control:
+    loop_var: nfs_port
+  notify: reload_firewall
+
+- name: Ensure nfs firewall udp ports are enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    port: "{{ nfs_port }}/udp"
+    state: enabled
+  loop: "{{ nfs_ports }}"
+  loop_control:
+    loop_var: nfs_port
+  notify: reload_firewall
+
+- name: Set KVM permissions for RHV
+  file:
+    path: "{{ item.strip().split()[0] }}"
+    state: directory
+    owner: 36
+    group: 36
+  with_items: "{{ nfs_exports }}"
+...

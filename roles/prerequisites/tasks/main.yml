@@ -1,0 +1,5 @@
+---
+- name: Install requested packages
+  yum:
+    name: "{{ rhsm_packages }}"
+    state: latest

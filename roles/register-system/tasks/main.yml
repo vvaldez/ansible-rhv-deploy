@@ -1,0 +1,35 @@
+---
+- name: Register and subscribe to pool
+  redhat_subscription:
+    state: present
+    username: "{{ rhsm_username }}"
+    password: "{{ rhsm_password }}"
+    pool_ids: "{{ rhsm_pool_ids }}"
+  register: subscription
+
+- block:
+    - name: Disable all RHSM repositories
+      rhsm_repository:
+        name: '*'
+        state: disabled
+    
+    - name: Enable requested RHSM repositories
+      rhsm_repository:
+        name: "{{ repo }}"
+        state: enabled
+      loop: "{{ rhsm_repos }}"
+      loop_control:
+        loop_var: repo
+  when: subscription.changed
+
+- name: Update kernel on system
+  yum:
+    name: '*'
+    state: latest
+  notify: reboot_server
+
+- name: Update system
+  yum:
+    name: kernel-*
+    state: latest
+...

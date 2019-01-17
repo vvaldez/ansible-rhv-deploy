@@ -1,0 +1,5 @@
+---
+# handlers file for roles/register-system
+- name: Reboot server
+  reboot:
+  listen: reboot_server

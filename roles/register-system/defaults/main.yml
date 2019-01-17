@@ -1,0 +1,12 @@
+---
+rhsm_username: username
+rhsm_password: password
+rhsm_pool_ids:
+  - 12345
+
+rhsm_repos:
+  - rhel-7-server-rpms
+
+rhsm_packages:
+  - ansible
+...

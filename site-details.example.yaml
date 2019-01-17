@@ -1,0 +1,40 @@
+---
+
+# Recommend using ansible-vault to store passwords, or use activation key
+rhsm_username: username
+rhsm_password: password
+
+rhsm_pool_ids:
+  - abc12345
+  - xyz67890
+
+rhv_manager_repos:
+ - rhel-7-server-rpms
+ - rhel-7-server-supplementary-rpms
+ - rhel-7-server-rhv-4.2-manager-rpms
+ - rhel-7-server-rhv-4-manager-tools-rpms
+ - rhel-7-server-ansible-2-rpms
+ - jb-eap-7-for-rhel-7-server-rpms
+
+rhv_hosted_engine_repos:
+ - rhel-7-server-rpms
+ - rhel-7-server-rhv-4-mgmt-agent-rpms
+ - rhel-7-server-supplementary-rpms
+ - rhel-7-server-ansible-2-rpms
+
+rhv_hypervisor_repos:
+ - rhel-7-server-rpms
+ - rhel-7-server-rhv-4-mgmt-agent-rpms
+
+rhv_manager_packages:
+  - rhvm
+  - tmux
+
+rhv_hosted_engine_packages:
+  - ovirt-hosted-engine-setup
+  - tmux
+
+rhv_nfs_exports:
+  - "/exports/rhv/hosted-engine 192.168.0.0/24(rw,sync,no_root_squash)"
+  - "/exports/rhv/data 192.168.0.0/24(rw,sync,no_root_squash)"
+...
