@@ -3,3 +3,14 @@
   yum:
     name: "{{ rhsm_packages }}"
     state: latest
+  when: rhsm_packages is defined | default(False) 
+
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Set /etc/hostname
+  template:
+    src: hostname.j2
+    dest: /etc/hostname
+...

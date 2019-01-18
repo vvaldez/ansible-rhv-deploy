@@ -1,0 +1,34 @@
+---
+- name: Include bertvv.bind
+  include_role:
+    name: bertvv.bind
+
+- name: Ensure dns firewall service is enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    service: dns
+    state: enabled
+
+- name: Ensure dns firewall tcp ports are enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    port: "{{ dns_port }}/tcp"
+    state: enabled
+  loop: "{{ dns_ports }}"
+  loop_control:
+    loop_var: dns_port
+  notify: reload_firewall
+
+- name: Ensure dns firewall udp ports are enabled
+  firewalld:
+    immediate: yes
+    permanent: yes
+    port: "{{ dns_port }}/udp"
+    state: enabled
+  loop: "{{ dns_ports }}"
+  loop_control:
+    loop_var: dns_port
+  notify: reload_firewall
+...

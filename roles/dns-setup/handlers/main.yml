@@ -1,0 +1,8 @@
+---
+- name: Ensure firewalld is reloaded
+  service:
+    name: firewalld
+    state: restarted
+    enabled: true
+  listen: reload_firewall
+...

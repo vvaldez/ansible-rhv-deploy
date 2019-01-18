@@ -6,6 +6,7 @@
     password: "{{ rhsm_password }}"
     pool_ids: "{{ rhsm_pool_ids }}"
   register: subscription
+  ignore_errors: yes
 
 - block:
     - name: Disable all RHSM repositories
@@ -24,12 +25,12 @@
 
 - name: Update kernel on system
   yum:
-    name: '*'
+    name: kernel-*
     state: latest
   notify: reboot_server
 
 - name: Update system
   yum:
-    name: kernel-*
+    name: '*'
     state: latest
 ...

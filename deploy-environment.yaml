@@ -6,6 +6,9 @@
         name: register-system
 
     - include_role:
+        name: prerequisites
+
+    - include_role:
         name: nfs-setup
       vars:
         nfs_exports: "{{ rhv_nfs_exports }}"
@@ -14,6 +17,23 @@
     when: 
       - install_nfs is not defined
       - install_nfs | default(True) | bool == True
+
+- hosts: dns-server
+  tasks:
+  - block:
+    - include_role:
+        name: register-system
+
+    - include_role:
+        name: prerequisites
+
+    - include_role:
+        name: dns-setup
+
+    tags: install_dns
+    when: 
+      - install_dns is not defined
+      - install_dns | default(True) | bool == True
 
 - hosts: rhv-hosted-engine
   tasks:
@@ -32,3 +52,4 @@
     when:
       - hosted_engine is not defined
       - hosted_engine | default(True) | bool == True
+...
